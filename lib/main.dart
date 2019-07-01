@@ -9,18 +9,18 @@ class TestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        floatingActionButton: RaisedButton(
-          child: Text("Debug"),
-          onPressed: () {
-            debugPrint("before call");
-            testJS().then((result){
-              debugPrint("debug call returned: $result");
-            });
-          },
-        ),
-        body: Text("Here!", style: Theme.of(context).textTheme.headline))
-    );
+        home: Scaffold(
+            floatingActionButton: RaisedButton(
+              child: Text("Debug"),
+              onPressed: () {
+                debugPrint("before call");
+                // Wrapping with allowInterop is required for the callback.
+                testJS().then(allowInterop((result) {
+                  debugPrint("debug call returned: $result");
+                }));
+              },
+            ),
+            body: Text("Here!", style: Theme.of(context).textTheme.headline)));
   }
 }
 
@@ -28,8 +28,11 @@ typedef Callback<T> = void Function(T arg);
 
 @JS()
 class Promise<T> {
-  external Promise<T> then(Callback<T> successCallback, [Function errorCallback]);
+  external Promise<T> then(Callback<T> successCallback,
+      [Function errorCallback]);
+
   external Promise<T> catchIt(Function errorCallback);
 }
+
 @JS('testJS')
 external Promise<String> testJS();

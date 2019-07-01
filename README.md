@@ -1,15 +1,15 @@
 
 # Flutter Web JS Interoperability Test
 
-Call an async JS method from Dart in a Flutter for Web project.
-This test illustrates a bug in the current release: https://github.com/flutter/flutter/issues/35126
+Call an async JS method returning a Promise from Dart in a Flutter for Web project.
 
-Works in dev mode:
+## Running
+
+Dev mode:
 
 `flutter pub global run webdev serve --no-release --auto restart --log-requests`
 
-Doesn't work in release mode:
+Release mode:
 
 `flutter pub global run webdev serve --release --auto restart --log-requests`
 
-Tested on the dev channel.
